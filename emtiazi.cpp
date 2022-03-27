@@ -2,16 +2,15 @@
 #include <vector>
 
 using namespace std;
+#define MAX_MOVEMENT 4
 
 vector<vector<int> > farm;
 //----------------
 long int
-Sum(
-    vector<int> v
-) {
+Sum(vector<int> row_fields) {
      long int sum = 0;
-    for (int i = 0; i < v.size(); i++)
-    sum += v[i];
+    for (int i = 0; i < row_fields.size(); i++)
+    sum += row_fields[i];
     return sum;
 }
 //--------------------------------
@@ -22,7 +21,7 @@ void solve(int m, int n, long int& harvest){
     int row = 0;
     int column = 0;
 
-    for(int move = 0; move < 4; move++) {
+    for(int move = 0; move < MAX_MOVEMENT; move++) {
         vector<long int> row_sums;
 
         for(int i = 0; i < m; i++){
@@ -66,23 +65,26 @@ void solve(int m, int n, long int& harvest){
         max_row = 0;
     }
 }
+
+vector < vector < int > > get_harvests(int m,int n){
+    int product;
+    for(int i = 0 ; i < m ; i++){
+        for(int j = 0 ; j < n ; j++){
+            cin >> product;
+            farm[i][j] = product;
+        }    
+    }
+    return farm;
+}
 /*----------------*/
 int main() {
     int m, n;
-    int    product;
-    
     long int harvest = 0;
     cin>>m>> n;
-    farm = vector < vector < int > > (m, vector<int>(n));
-    for(int i = 0 ; i < m ; i++){
-        for(int j = 0 ; j < n ; j++){
-            cin >> product;farm[i][j] = product;
-        }
-    
-    }
 
-    
-    
+    farm = vector < vector < int > > (m, vector<int>(n));
+    farm = get_harvests(m,n);
+
     // solve
     solve(m, n, harvest);
     cout<<harvest;
