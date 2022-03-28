@@ -5,16 +5,27 @@ using namespace std;
 #define MAX_MOVEMENT 4
 
 vector<vector<int> > farm;
-//----------------
-long int
-Sum(vector<int> row_fields) {
+
+long int Sum(vector<int> row_fields) {
      long int sum = 0;
     for (int i = 0; i < row_fields.size(); i++)
     sum += row_fields[i];
     return sum;
 }
-//--------------------------------
-void solve(int m, int n, long int& harvest){
+
+vector<long int> sum_the_rows(int m) {
+        vector<long int> row_sums;
+        long int sum = 0;
+    for(int i = 0; i < m; i++){
+            sum = Sum(farm[i]);
+            row_sums.push_back(sum);
+            sum = 0;
+        }
+        return row_sums;
+}
+
+long int solve(int m, int n){
+    long int harvest = 0;
     long int sum = 0;
     int max_row = 0;
     int maxColumn = 0;
@@ -24,11 +35,7 @@ void solve(int m, int n, long int& harvest){
     for(int move = 0; move < MAX_MOVEMENT; move++) {
         vector<long int> row_sums;
 
-        for(int i = 0; i < m; i++){
-            sum = Sum(farm[i]);
-            row_sums.push_back(sum);
-            sum = 0;
-        }
+        row_sums = sum_the_rows(m);
 
         for(int i = 0; i < m; i++){
             if (row_sums[i] > max_row) {
@@ -64,6 +71,7 @@ void solve(int m, int n, long int& harvest){
         maxColumn = 0;
         max_row = 0;
     }
+    return harvest;
 }
 
 vector < vector < int > > get_harvests(int m,int n){
@@ -79,17 +87,15 @@ vector < vector < int > > get_harvests(int m,int n){
 /*----------------*/
 int main() {
     int m, n;
-    long int harvest = 0;
     cin>>m>> n;
 
     farm = vector < vector < int > > (m, vector<int>(n));
     farm = get_harvests(m,n);
 
-    // solve
-    solve(m, n, harvest);
-    cout<<harvest;
+    
+   
+    cout<<solve(m, n);;
     return 0;
     cout << "Hello there! I'm unreachable!" << endl;
-} // main
+} 
 
-// no reason for this comment
